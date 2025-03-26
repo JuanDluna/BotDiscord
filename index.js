@@ -14,22 +14,19 @@ client.on('ready', () => {
     console.log(`✅ Bot conectado como ${client.user.tag}`);
 });
 
-// Comandos basicos con lectura de mensajes, por ejemplo "!hola" usando una funcion interna
-client.on('messageCreate', (message) => {
-    if (message.author.bot) return; // Ignorar mensajes de bots
-    const command = message.content;
-
-    if(command === '!mija') {
-        message.reply('Donde van');
-    }
-});
-
 // Comandos basicos con lectura de mensajes, por ejemplo "!hola" usando un archivo externo
 client.on('messageCreate', (message) => {
     if (message.author.bot) return; // Ignorar mensajes de bots
 
+    // Obtener el contenido del mensaje
     const command = message.content;
 
+    // Usando funcion interna
+    if(command === '!mija') {
+        message.reply('Donde van');
+    }
+
+    // Buscando desde el archivo externo
     if (commands[command]) {
         commands[command](message); // Ejecutar el comando si existe en basic_commands.js
     }
