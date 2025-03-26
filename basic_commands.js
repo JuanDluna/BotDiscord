@@ -1,5 +1,5 @@
 // basic_commands.js
-const { spotifyApi, startSpotifyLink, getAccessToken, refreshAccessToken } = require('./spotify');
+const { spotifyApi, startSpotifyLink, getAccessToken, refreshAccessToken } = require('./functions/spotify');
 
 // Comando para mostrar lo que está reproduciendo el bot en Spotify
 const playing = async (message) => {

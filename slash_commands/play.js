@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { spotifyApi, getAccessToken, refreshAccessToken } = require('../spotify');  // Suponiendo que 'spotify.js' contiene la lógica de integración con Spotify
+const { spotifyApi, getAccessToken, refreshAccessToken } = require('../functions/spotify');  // Suponiendo que 'spotify.js' contiene la lógica de integración con Spotify
 
 module.exports = {
     data: new SlashCommandBuilder()
