@@ -10,20 +10,35 @@ const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
+    // Permisos necesarios para reproducir música y leer el estado de la reproducción
+    const scopes = [
+        'user-library-read',                // Permite acceder a la biblioteca del usuario.
+        'user-read-playback-state',         // Permite leer el estado de la reproducción.
+        'user-read-currently-playing',      // Permite leer la canción que se está reproduciendo.
+        'user-modify-playback-state',      // Permite modificar la reproducción (pausar, reproducir, etc.).
+        'playlist-read-private',            // Permite leer las listas de reproducción privadas.
+        'playlist-read-collaborative',      // Permite leer las listas de reproducción colaborativas.
+        'app-remote-control',               // Permite controlar la reproducción de Spotify en dispositivos remotos.
+    ];
+
 // Almacenamos el token de acceso para el usuario
 let accessToken = null;
 let refreshToken = null;
 
 // Ruta para iniciar el proceso de vinculación
 function startSpotifyLink(message) {
-    const link = spotifyApi.createAuthorizeURL(['user-library-read', 'user-read-playback-state', 'user-read-currently-playing']);
+    const link = spotifyApi.createAuthorizeURL(scopes);
     message.reply(`Por favor, autoriza el acceso a tu cuenta de Spotify para vincularla con el bot. Haz clic aquí: ${link}`);
 }
 
 // Ruta de Express para redirigir a la autenticación
 app.get('/login', (req, res) => {
-    const scopes = ['user-library-read', 'user-read-playback-state', 'user-read-currently-playing'];
+
+
+    // Genera la URL de autorización con los permisos
     const authorizeURL = spotifyApi.createAuthorizeURL(scopes);
+    
+    // Redirige a la URL de autorización
     res.redirect(authorizeURL);
 });
 
