@@ -1,5 +1,5 @@
-// spotify.js 
 const SpotifyWebApi = require('spotify-web-api-node');
+const serverless = require('serverless-http');
 const express = require('express');
 const app = express();
 
@@ -39,6 +39,7 @@ app.get('/', (req, res) => {
     `);
 });
 
+// Ruta para iniciar sesión (redirigir al usuario a Spotify para autorización)
 app.get('/login', (req, res) => {
     const authorizeURL = spotifyApi.createAuthorizeURL(scopes, null);
     res.redirect(authorizeURL);
@@ -61,10 +62,10 @@ app.get('/callback', async (req, res) => {
 
             // Responder con el token de acceso
             res.send(`
-          <h1>Autenticación exitosa</h1>
-          <p>Tu token de acceso es: ${accessToken}</p>
-          <p><a href="/">Volver a la página principal</a></p>
-        `);
+                <h1>Autenticación exitosa</h1>
+                <p>Tu token de acceso es: ${accessToken}</p>
+                <p><a href="/">Volver a la página principal</a></p>
+            `);
         } catch (error) {
             console.error('Error al obtener el token:', error);
             res.send('❌ Hubo un error al autenticarte. Intenta nuevamente.');
@@ -99,16 +100,6 @@ async function refreshAccessToken() {
 }
 
 // Configurar el servidor Express para manejar las rutas
-function startSpotifyServer() {
-    app.listen(8888, () => {
-        console.log(`Servidor de autenticación Spotify corriendo en http://localhost:8888/login`);
-    });
-}
+const handler = serverless(app);  // Convertimos el servidor Express en una función sin servidor
 
-module.exports = {
-    spotifyApi,
-    startSpotifyLink,
-    getAccessToken,
-    startSpotifyServer,
-    refreshAccessToken
-};
+module.exports.handler = handler;  // Exportamos el handler para Netlify
