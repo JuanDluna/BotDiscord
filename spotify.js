@@ -107,11 +107,13 @@ function startSpotifyServer() {
     const PORT = 8888;
     server.listen(PORT, () => {
         console.log(`Servidor HTTP iniciado en http://localhost:${PORT}`);
+        console.log(`URL de autenticación de Spotify: ${spotifyApi.createAuthorizeURL(scopes)}`);
     });
 }
 
 // Exportar funciones para su uso en otros archivos
 module.exports = {
+    spotifyApi,
     startSpotifyServer,
     startSpotifyLink,
     getAccessToken,
