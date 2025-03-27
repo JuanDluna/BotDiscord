@@ -2,7 +2,7 @@ require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 const commands = require('./basic_commands'); // Importar comandos desde basic_commands.js
 const deployCommands = require('./deploy_commands');
-const { startSpotifyServer } = require('./functions/spotify');
+const { startSpotifyServer } = require('./spotify');
 
 const client = new Client({
     intents: [

@@ -1,6 +1,6 @@
 // slash_commands/recommend.js
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { spotifyApi, getAccessToken, refreshAccessToken } = require('../functions/spotify'); // Asegúrate de tener esta configuración para usar Spotify
+const { spotifyApi, getAccessToken, refreshAccessToken } = require('../spotify'); // Asegúrate de tener esta configuración para usar Spotify
 
 module.exports = {
     data: new SlashCommandBuilder()
