@@ -2,15 +2,15 @@ const http = require('http');
 const SpotifyWebApi = require('spotify-web-api-node');
 const url = require('url');
 
-// URL de redirección para la autenticación de Spotify
-const link = spotifyApi.createAuthorizeURL(scopes);
-
 // Configuración de Spotify
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
     redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
+
+// URL de redirección para la autenticación de Spotify
+const link = spotifyApi.createAuthorizeURL(scopes);
 
 // Permisos necesarios para reproducir música y leer el estado de la reproducción
 const scopes = [
