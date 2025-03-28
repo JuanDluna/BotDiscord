@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { spotifyApi, getAccessToken, refreshAccessToken } = require('../spotify');  // Suponiendo que 'spotify.js' contiene la lógica de integración con Spotify
+const { spotifyApi, getAccessToken, refreshAccessToken } = require('../spotify');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,6 +11,8 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
+        await interaction.deferReply(); // Deferir respuesta para evitar error 10062
+
         const song = interaction.options.getString('cancion');
         
         // 1. Obtener token de acceso
@@ -18,16 +20,15 @@ module.exports = {
         if (!accessToken) {
             accessToken = await refreshAccessToken();
             if (!accessToken) {
-                return interaction.reply('❌ No se pudo obtener el token de acceso de Spotify. Por favor, vincula tu cuenta de Spotify.');
+                return interaction.editReply('❌ No se pudo obtener el token de acceso de Spotify. Por favor, vincula tu cuenta de Spotify.');
             }
         }
 
-        // 2. Buscar la canción
         try {
+            // 2. Buscar la canción
             const searchResults = await spotifyApi.searchTracks(song);
-
             if (searchResults.body.tracks.items.length === 0) {
-                return interaction.reply('❌ No se encontró ninguna canción con ese nombre.');
+                return interaction.editReply('❌ No se encontró ninguna canción con ese nombre.');
             }
 
             const track = searchResults.body.tracks.items[0];
@@ -37,7 +38,7 @@ module.exports = {
             const activeDevice = devices.body.devices.find(device => device.is_active);
 
             if (!activeDevice) {
-                return interaction.reply('❌ No hay ningún dispositivo de reproducción activo.');
+                return interaction.editReply('❌ No hay ningún dispositivo de reproducción activo.');
             }
 
             // 4. Reproducir la canción en el dispositivo activo
@@ -46,11 +47,11 @@ module.exports = {
                 device_id: activeDevice.id
             });
 
-            // Responder al usuario
-            await interaction.reply(`🎶 Reproduciendo: **${track.name}** por ${track.artists.map(a => a.name).join(', ')}`);
+            // Responder al usuario usando editReply()
+            await interaction.editReply(`🎶 Reproduciendo: **${track.name}** por ${track.artists.map(a => a.name).join(', ')}`);
         } catch (error) {
             console.error(error);
-            return interaction.reply('❌ Hubo un error al intentar reproducir la canción.');
+            return interaction.editReply('❌ Hubo un error al intentar reproducir la canción.');
         }
     },
 };
