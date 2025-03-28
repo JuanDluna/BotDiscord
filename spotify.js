@@ -2,6 +2,9 @@ const http = require('http');
 const SpotifyWebApi = require('spotify-web-api-node');
 const url = require('url');
 
+// URL de redirección para la autenticación de Spotify
+const link = spotifyApi.createAuthorizeURL(scopes);
+
 // Configuración de Spotify
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -25,7 +28,6 @@ let refreshToken = null;
 
 // Función para iniciar el proceso de vinculación con Spotify
 function startSpotifyLink(message) {
-    const link = spotifyApi.createAuthorizeURL(scopes);
     message.reply(`Por favor, autoriza el acceso a tu cuenta de Spotify para vincularla con el bot. Haz clic aquí: ${link}`);
 }
 
@@ -107,7 +109,7 @@ function startSpotifyServer() {
     const PORT = process.env.PORT || 8888;
     server.listen(PORT, () => {
         console.log(`Servidor HTTP iniciado en http://localhost:${PORT}`);
-        console.log(`URL de autenticación de Spotify: ${spotifyApi.createAuthorizeURL(scopes)}`);
+        console.log(`URL de autenticación de Spotify: ${link}`);
     });
 }
 
