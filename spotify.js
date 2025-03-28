@@ -9,9 +9,6 @@ const spotifyApi = new SpotifyWebApi({
     redirectUri: process.env.SPOTIFY_REDIRECT_URI
 });
 
-// URL de redirección para la autenticación de Spotify
-const link = spotifyApi.createAuthorizeURL(scopes);
-
 // Permisos necesarios para reproducir música y leer el estado de la reproducción
 const scopes = [
     'user-library-read',                
@@ -22,6 +19,9 @@ const scopes = [
     'playlist-read-collaborative',      
     'app-remote-control',               
 ];
+
+// URL de redirección para la autenticación de Spotify
+const link = spotifyApi.createAuthorizeURL(scopes);
 
 let accessToken = null;
 let refreshToken = null;
